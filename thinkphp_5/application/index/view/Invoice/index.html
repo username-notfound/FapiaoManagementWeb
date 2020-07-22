@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>发票管理系统主页</title>
+    <link rel="stylesheet" type="text/css"
+      href="/thinkphp_5/public/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body class="container">
+  <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">发票系统管理系统</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="active"><a href="#">管理 <span class="sr-only">(current)</span></a></li>
+        <li><a href="#">上传</a></li>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">登陆</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+  <div class="page-header">
+    <h1>发票管理系统主页</h1>
+</div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-hover table-bordered">
+                <tr class="info">
+                    <th>序号</th>
+                    <th>发票代码</th>
+                    <th>发票号</th>
+                    <th>价税合计</th>
+                    <th>开票日期</th>
+                    <th>购买方名称</th>
+                </tr>
+                {volist name="invoices" id="invoice" key="key"}
+                <tr>
+                    <td>{$key}</td>
+                    <td>{$invoice->getData('InvoiceCode')}</td>
+                    <td>{$invoice->getData('InvoiceNum')}</td>
+                    <td>{$invoice->getData('AmountInFiguers')}</td>
+                    <td>{$invoice->getData('InvoiceDate')}</td>
+                    <td>{$invoice->getData('SellerName')}</td>
+                </tr>
+                {/volist}
+            </table>
+        </div>
+    </div>
+
+    <form method="post" target="hidden_frame" role="form">
+      <div class="col-lg-4">
+          <div class="input-group">
+            <input class="form-control" type="file" name="file" id="file"
+            accept="image/jpeg, image/png, image/jpg" style="display:none;"/>
+              <span class="input-group-btn">
+                  <input class="btn btn-primary" type="button" name="submit"
+                  value="上传发票" onclick="chooseImage();">
+                  <script type="text/javascript">
+                  function chooseImage(){
+                  $("#file").trigger("click");
+                  $('#file').change(function(){
+                    uploadImage();
+              });
+
+                  }
+                  </script>
+                  <script type="text/javascript">
+                  function uploadImage(){
+                    // FormData对象，来发送二进制文件。
+                    var formdata = new FormData();
+                    // 将文件追加到 formdata对象中。
+                    formdata.append("file",document.getElementById('file').files[0]);
+                    $.ajax({
+                      type: "POST",
+                      url: "insert",
+                      data:formdata,
+                      /**
+                      * 必须false才会避开jQuery对 formdata 的默认处理
+                      * XMLHttpRequest会对 formdata 进行正确的处理
+                      */
+                      processData: false,
+                      contentType: false, // 告诉jQuery不要去设置Content-Type请求头
+                      dataType: "json",
+                      success: function(data){
+                        alert(data.msg);
+                        console.log(data);
+                        location.reload();
+                      },
+                      error: function(jqXHR){
+                        alert("发生错误：" + jqXHR.status);
+                      }
+                    });
+                  }
+                  </script>
+              </span>
+          </div><!-- /input-group -->
+          <p class="help-block">支持jpg/jpeg/png格式，文件大小不得超过8MB</p>
+      </div><!-- /.col-lg-4 -->
+    </form>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

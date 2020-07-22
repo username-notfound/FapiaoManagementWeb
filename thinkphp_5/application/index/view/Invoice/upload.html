@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <title>上传发票</title>
+    <link rel="stylesheet" type="text/css" href="/thinkphp_5/public/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+  </head>
+  <body>
+    <div class="container">
+    <div class="py-5 text-center">
+    <h2>发票上传并识别</h2>
+
+    <form action="insert" method="post" enctype="multipart/form-data" >
+    <input class="form-control" type="file" name="file" id="file"
+    accept="image/jpeg, image/png, image/jpg"/>
+
+    <p><font color="#C0C0C0">支持jpg/jpeg/png格式，文件大小不得超过8MB</font>
+      <p/><br />
+    <input class="btn btn-primary btn-lg btn-block" type="submit" name="submit" value="提交" />
+    </form>
+
+    <div style = "padding:50px;"></div>
+    <button id="index" class="btn btn-primary" >返回主页</button>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){ 
+      $("#index").click(function(){
+        location.href="{:url('index/Invoice/index')}";
+      });
+    }); 
+    </script>
+    </div>
+    </div>
+
+  </body>
+</html>
